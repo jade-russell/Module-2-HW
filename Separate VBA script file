@@ -1,0 +1,75 @@
+Sub StockAnalysis()
+
+Dim Ticker As String
+Dim YearlyChange As Double
+Dim PercentChange As Double
+Dim TotalStockVolume As Double
+Dim OpeningPrice As Double
+Dim ClosingPrice As Double
+Dim Lastrow As Long
+Dim SummaryRow As Long
+      
+Range("I1").Value = "Ticker"
+Range("J1").Value = "Yearly Change"
+Range("K1").Value = "Percent Change"
+Range("L1").Value = "Total Stock Volume"
+
+Lastrow = Cells(Rows.Count, 1).End(xlUp).Row
+       
+SummaryRow = 2
+        For i = 2 To Lastrow
+           
+           If Cells(i + 1, 1).Value <> Cells(i, 1).Value Then
+               Ticker = Cells(i, 1).Value
+               OpeningPrice = Cells(i, 3).Value
+               ClosingPrice = Cells(i, 6).Value
+               YearlyChange = ClosingPrice - OpeningPrice
+               TotalStockVolume = TotalStockVolume + Cells(i, 7).Value
+
+
+               If OpeningPrice <> 0 Then
+                   PercentChange = (YearlyChange / OpeningPrice) * 100
+               Else
+                   PercentChange = 0
+               End If
+               
+            Cells(SummaryRow, 9).Value = Ticker
+            Cells(SummaryRow, 10).Value = YearlyChange
+            Cells(SummaryRow, 11).Value = PercentChange
+            Cells(SummaryRow, 11).NumberFormat = "0.00%"
+            Cells(SummaryRow, 12).Value = TotalStockVolume
+               
+               If YearlyChange > 0 Then
+                   Cells(SummaryRow, 10).Interior.Color = RGB(0, 255, 0)
+               ElseIf YearlyChange < 0 Then
+                   Cells(SummaryRow, 10).Interior.Color = RGB(255, 0, 0)
+               End If
+               
+               SummaryRow = SummaryRow + 1
+               
+               TotalVolume = 0
+           End If
+           
+           TotalVolume = TotalVolume + Cells(i, 7).Value
+
+SummaryLastRow = Cells(Rows.Count, 9).End(xlUp).Row
+
+     For j = 2 To SummaryLastRow
+            If Cells(j, 11).Value = Application.WorksheetFunction.Max(Range("K2:K" & SummaryLastRow)) Then
+                 Range("P2").Value = Cells(j, 9).Value
+                 Range("Q2").Value = Cells(j, 11).Value
+                 Range("Q2").NumberFormat = "0.00%"
+            ElseIf Cells(j, 11).Value = Application.WorksheetFunction.Min(Range("K2:K" & SummaryLastRow)) Then
+                Range("P3").Value = Cells(j, 9).Value
+                Range("Q3").Value = Cells(j, 11).Value
+                Range("Q3").NumberFormat = "0.00%"
+            ElseIf Cells(j, 12).Value = Application.WorksheetFunction.Max(Range("L2:L" & SummaryLastRow)) Then
+                Range("P4").Value = Cells(j, 9).Value
+                Range("Q4").Value = Cells(j, 12).Value
+            End If
+      Next j
+              
+        Next i
+       
+    
+End Sub
