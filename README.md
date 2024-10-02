@@ -13,3 +13,5 @@ The total stock volume of the stock. The result should match the following image
 Add functionality to your script to return the stock with the "Greatest % increase", "Greatest % decrease", and "Greatest total volume". The solution should match the following image:
 
 Source: Multiple Stack overflow webpages, TA assistance, and Loop lesson at UT Bootcamp
+
+I know to make it run across multiple sheets you can add "For Each ws In ThisWorkbook.Worksheets" then add ws, in front of the Cells lines 
